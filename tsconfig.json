@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "useDefineForClassFields": true,
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@pages/*": ["src/pages/*"],
+      "@routes/*": ["src/routes/*"],
+      "@store/*": ["src/store/*"],
+      "@theme/*": ["src/theme/*"],
+      "@validations/*": ["src/validations/*"],
+      "@modals/*": ["src/modals/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@libs/*": ["src/libs/*"],
+      "@data/*": ["src/data/*"],
+      "@context/*": ["src/context/*"],
+      
+      "@assets": ["src/assets/index"],
+      "@components": ["src/components/index"],
+      "@helpers": ["src/helpers/index"],
+      "@pages": ["src/pages/index"],
+      "@routes": ["src/routes/index"],
+      "@store": ["src/store/index"],
+      "@theme": ["src/theme/index"],
+      "@validations": ["src/validations/index"],
+      "@modals": ["src/modals/index"],
+      "@hooks": ["src/hooks/index"],
+      "@libs": ["src/libs/index"],
+      "@data": ["src/data/index"],
+      "@context": ["src/context/index"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
