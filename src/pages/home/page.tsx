@@ -1,6 +1,7 @@
 import LogoDotNet from "@assets/dotnet-logo.png";
 import LogoJava from "@assets/java-logo.png";
 import { CardLanguage } from "@components/cardLanguage/cardLanguage";
+import { useIndice } from "@context/indices";
 import { localStorageHandler } from "@helpers/localStorage";
 import { Box, Button, Stack, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ export const PageHome = () => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const [language, setLanguage] = useState<"JAVA" | "DOT_NET" | null>(null);
   const navigate = useNavigate();
+  const { handleClearQuestion} = useIndice()
 
   const handleLanguage = (value: "JAVA" | "DOT_NET" | null) => {
     if (language === value) {
@@ -22,6 +24,7 @@ export const PageHome = () => {
   };
 
   useEffect(() => {
+    handleClearQuestion();
     setLanguage(localStorageHandler("language", null));
   }, []);
 

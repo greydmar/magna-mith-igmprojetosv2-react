@@ -6,46 +6,76 @@ import { useThemeMode } from "@store/useThemeMode";
 import { colors } from "@theme/colors";
 import { useFormContext } from "react-hook-form";
 import { usePost } from "simple-queries-react";
-import { FormQuestion } from "src/types";
+import { FormQuestion, TypeBackend } from "src/types";
 import { PropsQuestion } from "./@types";
 import { QuestionCell } from "./questionCell";
 import { useEffect } from "react";
 import { useIndice } from "@context/indices";
 import { localStorageHandler } from "@helpers/localStorage";
 
+const endpoint = {
+  JAVA: "formulario-resposta/calcular/igf",
+  DOT_NET: "calculoAvaliacao",
+};
+
 export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
   const { setValue } = useFormContext<{ form: FormQuestion }>();
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { themeMode } = useThemeMode();
   const isDark = themeMode == "dark";
-  const {setIndice} = useIndice();
+  const { setIndice, idStep } = useIndice();
   const { watch } = useFormContext<{ form: FormQuestion }>();
   const questions = watch("form.questions");
-  const language = localStorageHandler("language");
+  const language: TypeBackend = localStorageHandler("language");
 
-  const { send, getResponse } = usePost<number>({
+  const { send, getResponse } = usePost<any>({
     apiName: language,
-    endpoint: "formulario-resposta/calcular/igf",
+    endpoint: endpoint[language],
   });
 
   const handleSetValue = (value: number) => {
     setValue(`form.questions.${index}.rating`, value);
 
-    const listQuestion =  questions?.map((item) => ({
-      id: item?.itemId,
-      numeroAvaliacao: questions[index].itemId == item?.itemId ? (value ?? 0) :  (item?.rating ?? 0),
-    }));
-    send(
-      [...listQuestion ]
-    );
+    if (language == "JAVA") {
+      const listQuestion = questions?.map((item) => ({
+        questaoId: item?.itemId,
+        numeroAvaliacao:
+          questions[index].itemId == item?.itemId
+            ? value ?? 0
+            : item?.rating ?? 0,
+      }));
+      send([...listQuestion]);
+    }
+
+    if (language == "DOT_NET") {
+      const listQuestion = questions?.map((item) => ({
+        codigoItem: item?.itemId,
+        pesoAtribuido:
+          questions[index].itemId == item?.itemId
+            ? value ?? 0
+            : item?.rating ?? 0,
+      }));
+      send({
+        codigoIndice: idStep,
+        situacao: 2,
+        items: [...listQuestion],
+      });
+    }
   };
 
   useEffect(() => {
     const indice = getResponse();
-    if(indice){
-      setIndice(indice)
+    if (indice) {
+      if (language == "JAVA") {
+
+        setIndice(indice);
+      }
+      if (language == "DOT_NET") {
+
+        setIndice(indice?.indiceCalculado);
+      }
     }
-  }, [getResponse()])
+  }, [getResponse()]);
 
   return (
     <>

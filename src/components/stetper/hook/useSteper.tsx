@@ -28,10 +28,10 @@ export const useSteper = () => {
 
     if (language === "DOT_NET") {
       const current = indices as InciceDotnet[];
-      setIdStep(indices[0].id);
+      setIdStep(current[0].codigoIndice);
       setSteps(
         current.map((item) => ({
-          id: item.id,
+          id: item.codigoIndice,
           descricao: item.nomeExibicao,
         }))
       );

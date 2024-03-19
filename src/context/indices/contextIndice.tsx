@@ -7,7 +7,6 @@ const IndiceContext = createContext<PropsIndiceContext>({
   idStep: "",
   indice: 0,
 
-
   setIndice: () => {},
   setIdStep: () => {},
   handleLoadList: () => {},
@@ -17,8 +16,8 @@ const IndiceContext = createContext<PropsIndiceContext>({
 });
 
 export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
-  const [indice, setIndice] =  useState(0)
-  const [idStep, setIdStep] =  useState("")
+  const [indice, setIndice] = useState<number | string>(0);
+  const [idStep, setIdStep] = useState("");
   const [listQuestion, setListQuestion] = useState<FormQuestion[]>([]);
 
   const handleLoadList = (formQuestion: FormQuestion[]) => {
@@ -31,7 +30,11 @@ export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
 
   const handleSetQuestion = () => {};
 
-  const handleClearQuestion = () => {};
+  const handleClearQuestion = () => {
+    setIndice(0);
+    setIdStep("");
+    setListQuestion([]);
+  };
 
   return (
     <>
