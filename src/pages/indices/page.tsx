@@ -1,7 +1,7 @@
 import { ProgressBar } from "@components/progressBar";
 import { Questiontable } from "@components/questiontable";
 import { Steper } from "@components/stetper";
-import { calculoIndice } from "@libs/calculoIndice";
+import { useIndice } from "@context/indices";
 import { formatNumber } from "@libs/formatNumber";
 import { Button, Typography } from "@mui/material";
 import { Box, Stack, useMediaQuery } from "@mui/system";
@@ -17,6 +17,7 @@ export const PageIndice = () => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { themeMode } = useThemeMode();
   const isDark = themeMode == "dark";
+  const { indice} = useIndice()
 
   const methods = useForm<{ form: FormQuestion }>();
 
@@ -52,10 +53,7 @@ export const PageIndice = () => {
 
             <Box marginY={2} marginTop={3}>
               <Questiontable>
-                <ProgressBar
-                  value={calculoIndice(methods?.watch("form.questions"))}
-                  label="Progresso IGF (Custo)"
-                />
+                <ProgressBar value={indice * 100} label="Progresso IGF (Custo)" />
               </Questiontable>
             </Box>
           </Box>
@@ -76,7 +74,7 @@ export const PageIndice = () => {
                 marginLeft={8}
               >
                 {formatNumber(
-                  calculoIndice(methods?.watch("form.questions"), false)
+                  indice
                 )}
               </Typography>
             </Box>

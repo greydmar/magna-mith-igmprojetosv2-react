@@ -2,17 +2,31 @@ import { useIndice } from "@context/indices";
 import { localStorageHandler } from "@helpers/localStorage";
 import { loadForm } from "@libs/loadForm";
 import { useEffect, useState } from "react";
-import { useGet } from "simple-queries-react";
-import { handleValidFormQuestion } from "../helpers/handleValidFormQuestion";
+import { useGet, usePost } from "simple-queries-react";
+import { FormQuestion, Question } from "src/types";
 import { PropsUsePageIndices } from "../@types";
+import { handleValidFormQuestion } from "../helpers/handleValidFormQuestion";
 
 export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
   const [openLanguage, setOpenLanguage] = useState(false);
-  const { listQuestion, handleLoadList } = useIndice();
-
-  const { send, getResponse } = useGet("/mock/listQuestoes.json");
+  const { listQuestion, handleLoadList, idStep } = useIndice();
+  const { send, getResponse } = useGet<{ id: string; descricao: string }[]>({
+    apiName: "JAVA",
+    endpoint: `questao`,
+  });
   const [openError, setOpenError] = useState(false);
   const [load, setLoad] = useState<boolean>(true);
+  const language = localStorageHandler("language");
+
+  const { send: sendPost } = usePost({
+    apiName: "JAVA",
+    endpoint: "formulario-resposta",
+  });
+
+  const { send: sendCalcular, getResponse: responseCalcular } = usePost({
+    apiName: "JAVA",
+    endpoint: "formulario-resposta/calcular/igf",
+  });
 
   const handleOnSubmit = async (data: any) => {
     const form = await handleValidFormQuestion(data.form);
@@ -21,24 +35,52 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
       setOpenError(true);
       return;
     }
-    console.log("enviar form", form);
+
+    sendPost({
+      indiceId: idStep,
+      respostas: form?.form?.questions?.map((item) => ({
+        id: item?.itemId,
+        numeroAvaliacao: item?.rating ?? 0,
+        justificativa: item?.justify,
+      })),
+    });
+  };
+
+  const handleCalcular = (data: FormQuestion) => {
+    sendCalcular(
+      data?.questions?.map((item) => ({
+        id: item?.itemId,
+        descricao: item?.rating,
+      }))
+    );
   };
 
   useEffect(() => {
     if (getResponse()) {
-      handleLoadList(getResponse() as any);
+      const dataQuestion: Question[] =
+        getResponse()?.map((item: { id: string; descricao: string }) => ({
+          itemId: item.id,
+          text: item.descricao,
+        })) ?? [];
+
+      handleLoadList([{ idForm: idStep, questions: dataQuestion }]);
     }
   }, [getResponse()]);
 
   useEffect(() => {
-    if (!listQuestion?.length) {
-      send();
+ 
+    if (!listQuestion?.length && idStep) {
+      send({
+        pathRest: {
+          indice: idStep,
+        },
+      });
     }
 
-    if (!localStorageHandler("language")) {
+    if (!language) {
       setOpenLanguage(true);
     }
-  }, []);
+  }, [idStep]);
 
   useEffect(() => {
     if (listQuestion?.length && load) {
@@ -47,11 +89,17 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
     }
   }, [listQuestion]);
 
+  // useEffect(() => {
+  //   handleCalcular(methods?.watch("form"));
+  // }, [methods?.watch("form")]);
+
   return {
     openLanguage,
     setOpenLanguage,
     openError,
     setOpenError,
     handleOnSubmit,
+    handleCalcular,
+    calculo: (responseCalcular() as number) ?? 0,
   };
 };

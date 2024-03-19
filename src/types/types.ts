@@ -13,13 +13,18 @@ export type AnyObject = Record<string, any>;
 export type Backend = "dot.net" | "java";
 
 export type Question = {
-  itemId: number;
+  itemId: string;
   text: string;
   rating?: number | null;
   justify?: string;
 };
 
 export type FormQuestion = {
-  idForm: number;
+  idForm: string;
   questions: Question[];
+};
+
+export type InciceJava = {
+  id: string;
+  descricao: string;
 };

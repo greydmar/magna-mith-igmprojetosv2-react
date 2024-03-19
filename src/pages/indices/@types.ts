@@ -1,4 +1,4 @@
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { FormQuestion } from "src/types";
 
 export type PropsUsePageIndices = {

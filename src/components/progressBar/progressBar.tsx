@@ -1,13 +1,13 @@
+import { formatNumber } from "@libs/formatNumber";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
-import { styles, stylesContent, stylesInternalBar } from "./styles";
-import { PropsProgressBar } from "./@types";
 import { useThemeMode } from "@store/useThemeMode";
 import { colors } from "@theme/colors";
-import { formatNumber } from "@libs/formatNumber";
+import { PropsProgressBar } from "./@types";
+import { styles, stylesContent, stylesInternalBar } from "./styles";
 
 export const ProgressBar: React.FC<PropsProgressBar> = ({
   label,
-  value = 20,
+  value= 0
 }) => {
   const { themeMode } = useThemeMode();
   const theme = useTheme();

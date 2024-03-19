@@ -1,10 +1,13 @@
-import { IconStep } from "@components/iconStep";
-import { steps } from "@data/steps";
-import { Step, StepLabel, Stepper } from "@mui/material";
+import { Stepper } from "@mui/material";
 import { Stack, useMediaQuery } from "@mui/system";
+import { useSteper } from "./hook/useSteper";
+import { StepItem } from "./stepItem";
 
 export const Steper = () => {
-    const isSmallScreen = useMediaQuery("(max-width:800px)");
+  const isSmallScreen = useMediaQuery("(max-width:800px)");
+
+  const {steps} = useSteper();
+
   return (
     <Stack
       sx={{ width: "100%" }}
@@ -12,11 +15,17 @@ export const Steper = () => {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Stepper activeStep={0} orientation={isSmallScreen ?  "vertical" : "horizontal"}>
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={IconStep} icon={index + 1}>{label}</StepLabel>
-          </Step>
+      <Stepper
+        activeStep={0}
+        orientation={isSmallScreen ? "vertical" : "horizontal"}
+      >
+        {steps.map((step, index) => (
+           <StepItem
+           key={step.id}
+           index={index}
+           size={steps.length}
+           label={step.descricao}
+         />
         ))}
       </Stepper>
     </Stack>

@@ -19,6 +19,6 @@ const questionSchema = yup.object<Question>({
 });
 
 export const formSchema = yup.object().shape({
-  idForm: yup.number().required(),
+  idForm: yup.string().required(),
   questions: yup.array().of(questionSchema),
 });

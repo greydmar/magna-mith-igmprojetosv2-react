@@ -4,7 +4,12 @@ import { FormQuestion } from "src/types";
 
 const IndiceContext = createContext<PropsIndiceContext>({
   listQuestion: [],
+  idStep: "",
+  indice: 0,
 
+
+  setIndice: () => {},
+  setIdStep: () => {},
   handleLoadList: () => {},
   handleClearList: () => {},
   handleSetQuestion: () => {},
@@ -12,6 +17,8 @@ const IndiceContext = createContext<PropsIndiceContext>({
 });
 
 export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
+  const [indice, setIndice] =  useState(0)
+  const [idStep, setIdStep] =  useState("")
   const [listQuestion, setListQuestion] = useState<FormQuestion[]>([]);
 
   const handleLoadList = (formQuestion: FormQuestion[]) => {
@@ -30,7 +37,11 @@ export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
     <>
       <IndiceContext.Provider
         value={{
+          indice,
+          idStep,
           listQuestion,
+          setIndice,
+          setIdStep,
           handleLoadList,
           handleClearList,
           handleSetQuestion,
