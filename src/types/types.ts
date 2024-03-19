@@ -12,6 +12,8 @@ export type AnyObject = Record<string, any>;
 
 export type Backend = "dot.net" | "java";
 
+export type TypeBackend = "DOT_NET" | "JAVA";
+
 export type Question = {
   itemId: string;
   text: string;
@@ -27,4 +29,10 @@ export type FormQuestion = {
 export type InciceJava = {
   id: string;
   descricao: string;
+};
+
+export type InciceDotnet = {
+  id: string;
+  codigoIndice: string;
+  nomeExibicao: string;
 };
