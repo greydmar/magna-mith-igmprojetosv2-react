@@ -3,7 +3,7 @@ import { Questiontable } from "@components/questiontable";
 import { Steper } from "@components/stetper";
 import { useIndice } from "@context/indices";
 import { formatNumber } from "@libs/formatNumber";
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { Box, Stack, useMediaQuery } from "@mui/system";
 import { useThemeMode } from "@store/useThemeMode";
 import { colors } from "@theme/colors";
@@ -17,7 +17,7 @@ export const PageIndice = () => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { themeMode } = useThemeMode();
   const isDark = themeMode == "dark";
-  const { indice} = useIndice()
+  const { indice } = useIndice();
 
   const methods = useForm<{ form: FormQuestion }>();
 
@@ -27,6 +27,8 @@ export const PageIndice = () => {
     openError,
     setOpenError,
     handleOnSubmit,
+    success,
+    isLoading,
   } = usePageIndices({ methods: methods });
 
   return (
@@ -53,7 +55,10 @@ export const PageIndice = () => {
 
             <Box marginY={2} marginTop={3}>
               <Questiontable>
-                <ProgressBar value={indice * 100} label="Progresso IGF (Custo)" />
+                <ProgressBar
+                  value={indice * 100}
+                  label="Progresso IGF (Custo)"
+                />
               </Questiontable>
             </Box>
           </Box>
@@ -73,9 +78,7 @@ export const PageIndice = () => {
                 fontWeight={"bold"}
                 marginLeft={8}
               >
-                {formatNumber(
-                  indice
-                )}
+                {formatNumber(indice)}
               </Typography>
             </Box>
           </Box>
@@ -113,23 +116,38 @@ export const PageIndice = () => {
                   (*****), e não é necessário fornecer uma justificativa.
                 </Typography>
               </Box>
-              <Box
-                width={isSmallScreen ? "100%" : "30%"}
-                bgcolor={colors.customBlue.main}
-              >
-                <Button
-                  fullWidth
-                  sx={{
-                    padding: 3,
-                    fontSize: 18,
-                    textTransform: "none",
-                    color: isDark ? colors?.primary?.contrastText : undefined,
-                  }}
-                  type="submit"
-                >
-                  Enviar Avaliação
-                </Button>
-              </Box>
+              <>
+                {isLoading() ? (
+                  <Stack justifyContent="center" alignItems="center" width={isSmallScreen ? "100%" : "30%"} padding={4}>
+
+                    <CircularProgress />
+                  </Stack>
+                ) : (
+                  <>
+                    {!success ? (
+                      <Box
+                        width={isSmallScreen ? "100%" : "30%"}
+                        bgcolor={colors.customBlue.main}
+                      >
+                        <Button
+                          fullWidth
+                          sx={{
+                            padding: 3,
+                            fontSize: 18,
+                            textTransform: "none",
+                            color: isDark
+                              ? colors?.primary?.contrastText
+                              : undefined,
+                          }}
+                          type="submit"
+                        >
+                          Enviar Avaliação
+                        </Button>
+                      </Box>
+                    ) : null}
+                  </>
+                )}
+              </>
             </Stack>
           </Box>
         </form>

@@ -11,6 +11,7 @@ import { PropsQuestion } from "./@types";
 import { QuestionCell } from "./questionCell";
 import { useEffect } from "react";
 import { useIndice } from "@context/indices";
+import { localStorageHandler } from "@helpers/localStorage";
 
 export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
   const { setValue } = useFormContext<{ form: FormQuestion }>();
@@ -20,9 +21,10 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
   const {setIndice} = useIndice();
   const { watch } = useFormContext<{ form: FormQuestion }>();
   const questions = watch("form.questions");
+  const language = localStorageHandler("language");
 
   const { send, getResponse } = usePost<number>({
-    apiName: "JAVA",
+    apiName: language,
     endpoint: "formulario-resposta/calcular/igf",
   });
 

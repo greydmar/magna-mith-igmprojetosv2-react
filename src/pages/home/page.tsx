@@ -1,11 +1,10 @@
-import LogoJava from "@assets/java-logo.png";
 import LogoDotNet from "@assets/dotnet-logo.png";
+import LogoJava from "@assets/java-logo.png";
 import { CardLanguage } from "@components/cardLanguage/cardLanguage";
+import { localStorageHandler } from "@helpers/localStorage";
 import { Box, Button, Stack, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { localStorageHandler } from "@helpers/localStorage";
 import { useNavigate } from "react-router";
-import { useGet } from "simple-queries-react";
 
 export const PageHome = () => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
@@ -26,18 +25,9 @@ export const PageHome = () => {
     setLanguage(localStorageHandler("language", null));
   }, []);
 
-
-  const {send } = useGet({
-    url: "http://localhost:8080/indices/v1/indice",
-    headers: {
-      'Access-Control-Allow-Origin': "*",
-      'Access-Control-Allow-Headers': "*"
-    },
-  })
   return (
     <>
       <Box padding={2} textAlign={"center"}>
-        <button onClick={() => send()}>baixar</button>
         <Typography
           variant="h5"
           fontWeight={"bold"}

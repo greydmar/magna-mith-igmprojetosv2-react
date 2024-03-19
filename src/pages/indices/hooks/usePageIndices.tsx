@@ -10,21 +10,22 @@ import { handleValidFormQuestion } from "../helpers/handleValidFormQuestion";
 export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
   const [openLanguage, setOpenLanguage] = useState(false);
   const { listQuestion, handleLoadList, idStep } = useIndice();
+  const language = localStorageHandler("language");
+
   const { send, getResponse } = useGet<{ id: string; descricao: string }[]>({
-    apiName: "JAVA",
+    apiName: language,
     endpoint: `questao`,
   });
   const [openError, setOpenError] = useState(false);
   const [load, setLoad] = useState<boolean>(true);
-  const language = localStorageHandler("language");
 
-  const { send: sendPost } = usePost({
-    apiName: "JAVA",
+  const { send: sendPost, success, isLoading } = usePost({
+    apiName: language,
     endpoint: "formulario-resposta",
   });
 
   const { send: sendCalcular, getResponse: responseCalcular } = usePost({
-    apiName: "JAVA",
+    apiName: language,
     endpoint: "formulario-resposta/calcular/igf",
   });
 
@@ -68,7 +69,6 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
   }, [getResponse()]);
 
   useEffect(() => {
- 
     if (!listQuestion?.length && idStep) {
       send({
         pathRest: {
@@ -89,10 +89,6 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
     }
   }, [listQuestion]);
 
-  // useEffect(() => {
-  //   handleCalcular(methods?.watch("form"));
-  // }, [methods?.watch("form")]);
-
   return {
     openLanguage,
     setOpenLanguage,
@@ -101,5 +97,7 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
     handleOnSubmit,
     handleCalcular,
     calculo: (responseCalcular() as number) ?? 0,
+    success, 
+    isLoading
   };
 };
