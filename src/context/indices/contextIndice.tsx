@@ -16,7 +16,7 @@ const IndiceContext = createContext<PropsIndiceContext>({
 });
 
 export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
-  const [indice, setIndice] = useState<number | string>(0);
+  const [indice, setIndice] = useState<number>(0);
   const [idStep, setIdStep] = useState("");
   const [listQuestion, setListQuestion] = useState<FormQuestion[]>([]);
 

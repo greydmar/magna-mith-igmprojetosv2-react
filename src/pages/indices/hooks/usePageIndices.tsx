@@ -23,7 +23,7 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
   const { listQuestion, handleLoadList, idStep } = useIndice();
   const language: TypeBackend = localStorageHandler("language");
 
-  const { send, getResponse } = useGet<any>({
+  const { send, getResponse, isLoading: isLoadingGet } = useGet<any>({
     apiName: language,
     endpoint: endpointGet[language],
   });
@@ -154,5 +154,6 @@ export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
     calculo: (responseCalcular() as number) ?? 0,
     success,
     isLoading,
+    isLoadingGet
   };
 };

@@ -29,6 +29,7 @@ export const PageIndice = () => {
     handleOnSubmit,
     success,
     isLoading,
+    isLoadingGet,
   } = usePageIndices({ methods: methods });
 
   return (
@@ -54,12 +55,18 @@ export const PageIndice = () => {
             </Typography>
 
             <Box marginY={2} marginTop={3}>
-              <Questiontable>
-                <ProgressBar
-                  value={indice * 100}
-                  label="Progresso IGF (Custo)"
-                />
-              </Questiontable>
+              {isLoadingGet() ? (
+                <Stack justifyContent="center" alignItems="center" padding={4}>
+                  <CircularProgress />
+                </Stack>
+              ) : (
+                <Questiontable>
+                  <ProgressBar
+                    value={indice * 100}
+                    label="Progresso IGF (Custo)"
+                  />
+                </Questiontable>
+              )}
             </Box>
           </Box>
           <Box paddingRight={3} paddingLeft={isSmallScreen ? 3 : 0}>
@@ -118,8 +125,12 @@ export const PageIndice = () => {
               </Box>
               <>
                 {isLoading() ? (
-                  <Stack justifyContent="center" alignItems="center" width={isSmallScreen ? "100%" : "30%"} padding={4}>
-
+                  <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    width={isSmallScreen ? "100%" : "30%"}
+                    padding={4}
+                  >
                     <CircularProgress />
                   </Stack>
                 ) : (
