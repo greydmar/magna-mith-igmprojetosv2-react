@@ -12,8 +12,11 @@ import { Questionario } from 'src/types';
 import { usePageIndices } from './hooks/usePageIndices';
 import { ModalLanguage } from './modals/modal';
 import { ModalError } from './modals/modalError';
+import { useEffect, useState } from 'react';
+import { ModalSuccess } from './modals/modalSuccess';
 
 export const PageIndice = () => {
+  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
   const isSmallScreen = useMediaQuery('(max-width:800px)');
   const { themeMode } = useThemeMode();
   const isDark = themeMode == 'dark';
@@ -48,6 +51,12 @@ export const PageIndice = () => {
 
     return result;
   };
+
+  useEffect(() => {
+    if (success) {
+      setSuccessModalOpen(true);
+    }
+  }, [success]);
 
   return (
     <>
@@ -184,6 +193,11 @@ export const PageIndice = () => {
       </FormProvider>
       <ModalLanguage open={openLanguage} setOpen={setOpenLanguage} />
       <ModalError open={openError} setOpen={setOpenError} />
+      <ModalSuccess
+        open={isSuccessModalOpen}
+        setOpen={setSuccessModalOpen}
+        indice={objIndice!}
+      />
     </>
   );
 };
