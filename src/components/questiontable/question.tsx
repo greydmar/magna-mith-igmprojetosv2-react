@@ -5,77 +5,48 @@ import { Stack, useMediaQuery } from "@mui/system";
 import { useThemeMode } from "@store/useThemeMode";
 import { colors } from "@theme/colors";
 import { useFormContext } from "react-hook-form";
-import { usePost } from "simple-queries-react";
-import { FormQuestion, TypeBackend } from "src/types";
+import { Questionario } from "@models";
 import { PropsQuestion } from "./@types";
 import { QuestionCell } from "./questionCell";
-import { useEffect } from "react";
 import { useIndice } from "@context/indices";
-import { localStorageHandler } from "@helpers/localStorage";
-
-const endpoint = {
-  JAVA: "formulario-resposta/calcular/igf",
-  DOT_NET: "calculoAvaliacao",
-};
+import { useSetupOpCalculoFator } from "@hooks/useSetupOpCalculoFator";
 
 export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
-  const { setValue } = useFormContext<{ form: FormQuestion }>();
-  const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { themeMode } = useThemeMode();
   const isDark = themeMode == "dark";
-  const { setIndice, idStep } = useIndice();
-  const { watch } = useFormContext<{ form: FormQuestion }>();
-  const questions = watch("form.questions");
-  const language: TypeBackend = localStorageHandler("language");
+  const isSmallScreen = useMediaQuery("(max-width:800px)");
+  const { setIndice } = useIndice();
+  const formContext = useFormContext<{ form: Questionario }>();
+  const { setValue } = useFormContext<{ form: Questionario }>();
 
-  const { send, getResponse } = usePost<any>({
-    apiName: language,
-    endpoint: endpoint[language],
-  });
+  const opCalculoFator = useSetupOpCalculoFator();
 
   const handleSetValue = (value: number) => {
-    setValue(`form.questions.${index}.rating`, value);
+    setValue(`form.questoes.${index}.rating`, value);
 
-    if (language == "JAVA") {
-      const listQuestion = questions?.map((item) => ({
-        questaoId: item?.itemId,
-        numeroAvaliacao:
-          questions[index].itemId == item?.itemId
-            ? value ?? 0
-            : item?.rating ?? 0,
-      }));
-      send([...listQuestion]);
-    }
-
-    if (language == "DOT_NET") {
-      const listQuestion = questions?.map((item) => ({
-        codigoItem: item?.itemId,
-        pesoAtribuido:
-          questions[index].itemId == item?.itemId
-            ? value ?? 0
-            : item?.rating ?? 0,
-      }));
-      send({
-        codigoIndice: idStep,
-        situacao: 2,
-        items: [...listQuestion],
-      });
-    }
+    const form = formContext.getValues().form;
+    opCalculoFator.enviarRecalculo(form, question);
   };
 
-  useEffect(() => {
-    const indice = getResponse();
-    if (indice) {
-      if (language == "JAVA") {
+  opCalculoFator.processarRespostaRecalculo((qResposta: Questionario) => {
+    const qForm = formContext.getValues().form;
+    for (let updIndex = 0; updIndex < qResposta.questoes.length; updIndex++) {
+      const qAtual = qResposta.questoes[updIndex];
+      const qLocal = qForm.questoes[updIndex];
 
-        setIndice(indice);
-      }
-      if (language == "DOT_NET") {
+      if (qLocal.id != qAtual.id) continue;
 
-        setIndice(indice?.indiceCalculado);
-      }
+      if (qLocal.versao == qAtual.versao) continue;
+
+      setValue(
+        `form.questoes.${updIndex}.textoJustificativa`,
+        qAtual.textoJustificativa
+      );
+      setValue(`form.questoes.${updIndex}.rating`, qAtual.rating);
     }
-  }, [getResponse()]);
+
+    setIndice(qResposta.ratingCalculado ?? 0);
+  });
 
   return (
     <>
@@ -112,7 +83,7 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
               </Box>
             </Box>
             <Box>
-              <Typography component={"span"}>{question?.text}</Typography>
+              <Typography component={"span"}>{question?.texto}</Typography>
             </Box>
           </Stack>
         </Box>

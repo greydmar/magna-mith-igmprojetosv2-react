@@ -1,7 +1,7 @@
-import { FormQuestion } from "src/types";
+import { Questionario } from "src/types";
 import { formSchema } from "../validations";
 
-export const handleValidFormQuestion = async (form: FormQuestion) => {
+export const handleValidateQuestionario = async (form: Questionario) => {
   try {
     await formSchema.validate(form);
     return { isValid: true, form };

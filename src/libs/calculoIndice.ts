@@ -1,6 +1,6 @@
-import { Question } from "src/types";
+import { Questao } from "src/types";
 
-export const calculoIndice = (questions: Question[], bar: boolean = true): number => {
+export const calculoIndice = (questions: Questao[], bar: boolean = true): number => {
   const rating: number[] = [];
   let total = 0;
 

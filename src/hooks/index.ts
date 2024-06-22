@@ -1,1 +1,1 @@
-export * from "./useGloblaStyles"
+export * from "./useGlobalStyles"

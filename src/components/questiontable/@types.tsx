@@ -1,4 +1,4 @@
-import { Question } from "src/types";
+import { Questao } from "src/types";
 
 export type PropsQuestionTable = {
   children: React.ReactNode;
@@ -10,16 +10,16 @@ export type PropsQuestionCell = {
 };
 
 export type PropsQuestionRow = {
-  question: Question;
+  question: Questao;
   index: number;
 };
 
 export type PropsQuestion = {
   index: number;
-  question: Question;
+  question: Questao;
 };
 
 export type PropsJustification = {
   index: number;
-  question: Question;
+  question: Questao;
 };

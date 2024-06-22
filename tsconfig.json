@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2021",
     "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -33,8 +34,7 @@
       "@hooks/*": ["src/hooks/*"],
       "@libs/*": ["src/libs/*"],
       "@data/*": ["src/data/*"],
-      "@context/*": ["src/context/*"],
-      
+      "@context/*": ["src/context/*"],     
       "@assets": ["src/assets/index"],
       "@components": ["src/components/index"],
       "@helpers": ["src/helpers/index"],
@@ -44,6 +44,8 @@
       "@theme": ["src/theme/index"],
       "@validations": ["src/validations/index"],
       "@modals": ["src/modals/index"],
+      "@models": ["src/types/index"],
+      "@remoteApi": ["src/services/remoteApi"],
       "@hooks": ["src/hooks/index"],
       "@libs": ["src/libs/index"],
       "@data": ["src/data/index"],

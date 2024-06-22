@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
-import { FormQuestion } from "src/types";
+import { Questionario } from "src/types";
 
 export type PropsUsePageIndices = {
-   methods:  UseFormReturn<{ form: FormQuestion }, any, undefined>
+   methods:  UseFormReturn<{ form: Questionario }, any, undefined>
 }

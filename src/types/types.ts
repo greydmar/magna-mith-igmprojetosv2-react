@@ -14,25 +14,24 @@ export type Backend = "dot.net" | "java";
 
 export type TypeBackend = "DOT_NET" | "JAVA";
 
-export type Question = {
-  itemId: string;
-  text: string;
-  rating?: number | null;
-  justify?: string;
-};
-
-export type FormQuestion = {
-  idForm: string;
-  questions: Question[];
-};
-
-export type InciceJava = {
-  id: string;
-  descricao: string;
-};
-
-export type InciceDotnet = {
+export type Indice = {
   id: string;
   codigoIndice: string;
-  nomeExibicao: string;
+  descricao?: string | null;
+};
+
+export type Questao = {
+  id: string;
+  texto: string;
+  rating?: number | null;
+  versao: number;
+  textoJustificativa?: string | null;
+};
+
+export type Questionario = {
+  id: string;
+  codigoIndice: string;
+  ratingCalculado?: number|null;
+  versao: number;
+  questoes: Questao[];
 };

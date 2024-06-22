@@ -1,8 +1,8 @@
-import { Question } from "src/types";
+import { Questao } from "@models";
 import * as yup from "yup";
 
-const questionSchema = yup.object<Question>({
-  justify: yup
+const questionSchema = yup.object<Questao>({
+  textoJustificativa: yup
     .string()
     .test("required", "Justificativa é obrigatória", (value, fields) => {
       if (fields.parent.rating == 0 || fields.parent.rating == 5) {
@@ -19,6 +19,6 @@ const questionSchema = yup.object<Question>({
 });
 
 export const formSchema = yup.object().shape({
-  idForm: yup.string().required(),
-  questions: yup.array().of(questionSchema),
+  id: yup.string().required(),
+  questoes: yup.array().of(questionSchema),
 });

@@ -6,14 +6,11 @@ import { QuestionCell } from "./questionCell";
 import { useThemeMode } from "@store/useThemeMode";
 import { colors } from "@theme/colors";
 import { PropsJustification } from "./@types";
-import { FormQuestion } from "src/types";
+import { Questionario } from "src/types";
 import { useFormContext } from "react-hook-form";
 
-export const Justification: React.FC<PropsJustification> = ({
-  question,
-  index,
-}) => {
-  const { setValue, watch } = useFormContext<{ form: FormQuestion }>();
+export const Justification: React.FC<PropsJustification> = ({ question, index }) => {
+  const { setValue, watch } = useFormContext<{ form: Questionario }>();
   const [selected, setSelected] = useState<boolean>(false);
   const isSmallScreen = useMediaQuery("(max-width:800px)");
   const { themeMode } = useThemeMode();
@@ -22,10 +19,10 @@ export const Justification: React.FC<PropsJustification> = ({
   const isDisableJustify = !question?.rating || question?.rating < 5
 
   const handleSetValue = (value: string) => {
-    setValue(`form.questions.${index}.justify`, value);
+    setValue(`form.questoes.${index}.textoJustificativa`, value);
   };
 
-  const toogleSelected = () => {
+  const toggleSelected = () => {
     setSelected((prev) => !prev);
   };
 
@@ -38,13 +35,13 @@ export const Justification: React.FC<PropsJustification> = ({
           alignItems={"center"}
           position={"relative"}
           width={"100%"}
-         
+
           bgcolor={
             question?.rating && question?.rating == 5
               ? colorDisable
               : isDark
-              ? colors?.darkMode?.light
-              : undefined
+                ? colors?.darkMode?.light
+                : undefined
           }
         >
           <Stack margin={1} width={"100%"}>
@@ -54,9 +51,9 @@ export const Justification: React.FC<PropsJustification> = ({
                 autoFocus
                 fullWidth
                 placeholder="Indicar Justificativa"
-                onBlur={toogleSelected}
+                onBlur={toggleSelected}
                 sx={{ marginLeft: 2 }}
-                value={watch(`form.questions.${index}.justify`) ?? ""}
+                value={watch(`form.questoes.${index}.textoJustificativa`) ?? ""}
                 onChange={(e) => {
                   handleSetValue(e.target.value);
                 }}
@@ -65,11 +62,11 @@ export const Justification: React.FC<PropsJustification> = ({
               <Box
                 paddingLeft={2}
                 onClick={() => {
-                  isDisableJustify && toogleSelected();
+                  isDisableJustify && toggleSelected();
                 }}
                 sx={{
                   cursor:
-                  isDisableJustify
+                    isDisableJustify
                       ? "pointer"
                       : undefined,
                 }}
@@ -83,9 +80,9 @@ export const Justification: React.FC<PropsJustification> = ({
                 >
                   {question?.rating === 5
                     ? "Não é necessário indicar justificativa"
-                    : question?.justify?.trim()
-                    ? question?.justify
-                    : "Indicar Justificativa"}
+                    : question?.textoJustificativa?.trim()
+                      ? question?.textoJustificativa
+                      : "Indicar Justificativa"}
                 </Typography>
               </Box>
             )}
