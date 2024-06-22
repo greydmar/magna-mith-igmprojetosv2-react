@@ -1,17 +1,19 @@
-import { useState } from "react";
-import { PropsUsePageIndices } from "../@types";
-import { useSetupListarIndices } from "@hooks/useSetupListarIndices";
-import { useSetupNovoQuestionario } from "@hooks/useSetupNovoQuestionario";
-import { useSetupFinalizarQuestionario } from "@hooks/useSetupFinalizarQuestionario";
+import { useState } from 'react';
+import { PropsUsePageIndices } from '../@types';
+import { useSetupListarIndices } from '@hooks/useSetupListarIndices';
+import { useSetupNovoQuestionario } from '@hooks/useSetupNovoQuestionario';
+import { useSetupFinalizarQuestionario } from '@hooks/useSetupFinalizarQuestionario';
 
 export const usePageIndices = ({ methods }: PropsUsePageIndices) => {
   const [openLanguage, setOpenLanguage] = useState(false);
   const [openError, setOpenError] = useState(false);
 
   /* setup */
-  const opListarIndices = useSetupListarIndices({ methods: methods });
+  const opListarIndices = useSetupListarIndices({ methods, setOpenLanguage });
   useSetupNovoQuestionario();
-  const opFinalizarQuestionario = useSetupFinalizarQuestionario();
+  const opFinalizarQuestionario = useSetupFinalizarQuestionario({
+    setOpenError,
+  });
 
   return {
     openLanguage,
