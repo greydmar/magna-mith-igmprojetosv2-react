@@ -1,21 +1,28 @@
 import { useIndice } from '@context/indices';
 import { localStorageHandler } from '@helpers/localStorage';
 import { loadForm } from '@libs/loadForm';
-import { TypeBackend } from '@models';
-import { PropsUsePageIndices } from '@pages/indices/@types';
+import { Questionario, TypeBackend } from '@models';
 import { EndpointsMap, Mapeamentos, ServerModels } from '@remoteApi';
 import { useEffect, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { useGet } from 'simple-queries-react';
 
-export const useSetupListarIndices = ({ methods }: PropsUsePageIndices) => {
+type UseSetupListarIndicesProps = {
+  methods: UseFormReturn<{ form: Questionario }, any, undefined>;
+  setOpenLanguage: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const useSetupListarIndices = ({
+  methods,
+  setOpenLanguage,
+}: UseSetupListarIndicesProps) => {
   const lang: TypeBackend = localStorageHandler('language');
-  const [, setOpenLanguage] = useState(false);
   const [load, setLoad] = useState<boolean>(true);
   const ctx = useIndice();
 
   const reqInfo = useGet<ServerModels.Indice[]>({
     apiName: lang,
-    endpoint: EndpointsMap[lang].listaIndices,
+    endpoint: EndpointsMap[lang]?.listaIndices,
   });
 
   /* condição monitorada para envio requisição */
@@ -40,7 +47,7 @@ export const useSetupListarIndices = ({ methods }: PropsUsePageIndices) => {
   /* tratamento de resposta: sucesso */
   useEffect(() => {
     const response = reqInfo.getResponse();
-    if (!response) {
+    if (!response || !Array.isArray(response)) {
       return;
     }
     const result = Mapeamentos.mapFromServerModelIndices(response);

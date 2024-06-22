@@ -1,11 +1,11 @@
-import { Questao } from "@models";
-import * as yup from "yup";
+import { Questao } from '@models';
+import * as yup from 'yup';
 
 const questionSchema = yup.object<Questao>({
   textoJustificativa: yup
     .string()
-    .test("required", "Justificativa é obrigatória", (value, fields) => {
-      if (fields.parent.rating == 0 || fields.parent.rating == 5) {
+    .test('required', 'Justificativa é obrigatória', (value, fields) => {
+      if (fields.parent.rating == 5) {
         return true;
       }
 

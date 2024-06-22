@@ -11,7 +11,7 @@ export const useSetupNovoQuestionario = () => {
 
   const reqInfo = usePost<ServerModels.Questionario>({
     apiName: lang,
-    endpoint: EndpointsMap[lang].novoQuestionario,
+    endpoint: EndpointsMap[lang]?.novoQuestionario,
   });
 
   /* condição monitorada para envio requisição */

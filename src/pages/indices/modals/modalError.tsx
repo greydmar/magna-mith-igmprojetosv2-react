@@ -3,8 +3,8 @@ import {
   FooterButtons,
   HeaderModal,
   Modal,
-} from "@components/modal";
-import { Box, Typography } from "@mui/material";
+} from '@components/modal';
+import { Box, Typography } from '@mui/material';
 type PropsModal = {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -12,13 +12,13 @@ type PropsModal = {
 export const ModalError: React.FC<PropsModal> = ({ open, setOpen }) => {
   return (
     <Modal open={open} setOpen={setOpen} staticEsc>
-      <HeaderModal label="Justificativas faltantes" />
+      <HeaderModal label="Justificativas pendentes" />
 
       <ContentModal>
         <Box padding={3}>
           <Typography>
-            É necessário preencher todas as justificativas com classificação NA
-            ou entre 1 e 4 estrelas.
+            Existem justificativas pendentes, por favor verifique para
+            prosseguir.
           </Typography>
         </Box>
       </ContentModal>

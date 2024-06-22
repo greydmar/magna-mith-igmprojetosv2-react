@@ -3,17 +3,22 @@ import { localStorageHandler } from '@helpers/localStorage';
 import { TypeBackend } from '@models';
 import { handleValidateQuestionario } from '@pages/indices/helpers/handleValidateQuestionario';
 import { EndpointsMap, Mapeamentos, ServerModels } from '@remoteApi';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { usePut } from 'simple-queries-react';
 
-export const useSetupFinalizarQuestionario = () => {
+type SetupFinalizarQuestionarioProps = {
+  setOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const useSetupFinalizarQuestionario = ({
+  setOpenError,
+}: SetupFinalizarQuestionarioProps) => {
   const lang: TypeBackend = localStorageHandler('language');
-  const [, setOpenError] = useState(false);
   const ctx = useIndice();
 
   const reqInfo = usePut<ServerModels.Questionario>({
     apiName: lang,
-    endpoint: EndpointsMap[lang].finalizado,
+    endpoint: EndpointsMap[lang]?.finalizado,
   });
 
   /* condição monitorada para envio requisição */
@@ -21,6 +26,7 @@ export const useSetupFinalizarQuestionario = () => {
     const form = await handleValidateQuestionario(data.form);
 
     if (!form.isValid) {
+      console.log('aqui');
       setOpenError(true);
       return;
     }
