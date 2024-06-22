@@ -1,13 +1,14 @@
-import { FormQuestion } from "src/types";
+import { Questionario } from "src/types";
 
-export const loadForm = (data: FormQuestion) => {
+export const loadForm = (data: Questionario) => {
   return {
     ...data,
-    questions: data?.questions?.map((item) => {
+
+    questoes: data?.questoes?.map((item) => {
       return {
         ...item,
-        justify: undefined,
-        rating: undefined,
+        textoJustificativa: item.textoJustificativa??null,
+        rating: item.rating??null,
       };
     }),
   };

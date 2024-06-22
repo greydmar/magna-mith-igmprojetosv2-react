@@ -21,10 +21,10 @@ export const Steper = () => {
       >
         {steps.map((step, index) => (
            <StepItem
-           key={step.id}
-           index={index}
-           size={steps.length}
-           label={step.descricao}
+           key = {step.id}
+           index = {index}
+           size = {steps.length}
+           label = {step.descricao??""}
          />
         ))}
       </Stepper>

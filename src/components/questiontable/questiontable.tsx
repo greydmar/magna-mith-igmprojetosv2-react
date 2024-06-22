@@ -3,12 +3,12 @@ import { Stack, useMediaQuery } from "@mui/system";
 import { PropsQuestionTable } from "./@types";
 import { QuestionRow } from "./questionRow";
 import { useFormContext } from "react-hook-form";
-import { FormQuestion } from "src/types";
+import { Questionario } from "src/types";
 
 export const Questiontable: React.FC<PropsQuestionTable> = ({ children }) => {
   const isSmallScreen = useMediaQuery("(max-width:800px)");
-  const { watch } = useFormContext<{ form: FormQuestion }>();
-  const questions = watch("form.questions");
+  const { watch } = useFormContext<{ form: Questionario }>();
+  const questoes = watch("form.questoes");
 
   return (
     <>
@@ -26,11 +26,11 @@ export const Questiontable: React.FC<PropsQuestionTable> = ({ children }) => {
             </Box>
           ) : null}
         </Stack>
-        {questions?.map((question, index) => (
+        {questoes?.map((questao, index) => (
           <QuestionRow
-            question={question}
+            question={questao}
             index={index}
-            key={`question-row-${question.itemId}`}
+            key={`question-row-${questao.id}`}
           />
         ))}
       </Stack>

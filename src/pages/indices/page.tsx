@@ -1,25 +1,25 @@
-import { ProgressBar } from "@components/progressBar";
-import { Questiontable } from "@components/questiontable";
-import { Steper } from "@components/stetper";
-import { useIndice } from "@context/indices";
-import { formatNumber } from "@libs/formatNumber";
-import { Button, CircularProgress, Typography } from "@mui/material";
-import { Box, Stack, useMediaQuery } from "@mui/system";
-import { useThemeMode } from "@store/useThemeMode";
-import { colors } from "@theme/colors";
-import { FormProvider, useForm } from "react-hook-form";
-import { FormQuestion } from "src/types";
-import { usePageIndices } from "./hooks/usePageIndices";
-import { ModalLanguage } from "./modals/modal";
-import { ModalError } from "./modals/modalError";
+import { ProgressBar } from '@components/progressBar';
+import { Questiontable } from '@components/questiontable';
+import { Steper } from '@components/stetper';
+import { useIndice } from '@context/indices';
+import { formatNumber } from '@libs/formatNumber';
+import { Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Stack, useMediaQuery } from '@mui/system';
+import { useThemeMode } from '@store/useThemeMode';
+import { colors } from '@theme/colors';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Questionario } from 'src/types';
+import { usePageIndices } from './hooks/usePageIndices';
+import { ModalLanguage } from './modals/modal';
+import { ModalError } from './modals/modalError';
 
 export const PageIndice = () => {
-  const isSmallScreen = useMediaQuery("(max-width:800px)");
+  const isSmallScreen = useMediaQuery('(max-width:800px)');
   const { themeMode } = useThemeMode();
-  const isDark = themeMode == "dark";
-  const { indice } = useIndice();
+  const isDark = themeMode == 'dark';
+  const { indice, objIndice } = useIndice();
 
-  const methods = useForm<{ form: FormQuestion }>();
+  const methods = useForm<{ form: Questionario }>();
 
   const {
     openLanguage,
@@ -29,7 +29,7 @@ export const PageIndice = () => {
     handleOnSubmit,
     success,
     isLoading,
-    isLoadingGet,
+    isLoadingIndices,
   } = usePageIndices({ methods: methods });
 
   return (
@@ -38,16 +38,16 @@ export const PageIndice = () => {
         <form onSubmit={methods.handleSubmit((data) => handleOnSubmit(data))}>
           <Steper />
           <Box paddingX={3}>
-            <Typography variant="h5" fontWeight={"bold"} marginBottom={1}>
-              Resultado Final do Check-list de{" "}
+            <Typography variant="h5" fontWeight={'bold'} marginBottom={1}>
+              Resultado Final do Check-list de{' '}
               <Typography
                 variant="h5"
-                fontWeight={"bold"}
-                component={"span"}
-                color={"primary.main"}
+                fontWeight={'bold'}
+                component={'span'}
+                color={'primary.main'}
               >
                 Custo
-              </Typography>{" "}
+              </Typography>{' '}
               que compõe o IGF
             </Typography>
             <Typography variant="subtitle1">
@@ -55,7 +55,7 @@ export const PageIndice = () => {
             </Typography>
 
             <Box marginY={2} marginTop={3}>
-              {isLoadingGet() ? (
+              {isLoadingIndices() ? (
                 <Stack justifyContent="center" alignItems="center" padding={4}>
                   <CircularProgress />
                 </Stack>
@@ -69,37 +69,39 @@ export const PageIndice = () => {
               )}
             </Box>
           </Box>
-          <Box paddingRight={3} paddingLeft={isSmallScreen ? 3 : 0}>
-            <Box bgcolor={colors.customBlue.main} paddingY={2}>
-              <Typography
-                component={"span"}
-                variant="h5"
-                fontWeight={"bold"}
-                marginLeft={6}
-              >
-                Índice IGF - C
-              </Typography>
-              <Typography
-                component={"span"}
-                variant="h5"
-                fontWeight={"bold"}
-                marginLeft={8}
-              >
-                {formatNumber(indice)}
-              </Typography>
+          {objIndice && (
+            <Box paddingRight={3} paddingLeft={isSmallScreen ? 3 : 0}>
+              <Box bgcolor={colors.customBlue.main} paddingY={2}>
+                <Typography
+                  component={'span'}
+                  variant="h5"
+                  fontWeight={'bold'}
+                  marginLeft={6}
+                >
+                  Índice {objIndice?.descricao}
+                </Typography>
+                <Typography
+                  component={'span'}
+                  variant="h5"
+                  fontWeight={'bold'}
+                  marginLeft={8}
+                >
+                  {formatNumber(indice)}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
           <Box paddingX={3} marginTop={3} marginBottom={12}>
             <Stack
-              direction={isSmallScreen ? "column-reverse" : "row"}
+              direction={isSmallScreen ? 'column-reverse' : 'row'}
               gap={isSmallScreen ? 6 : 0}
-              alignItems={"flex-start"}
+              alignItems={'flex-start'}
             >
               <Box flexGrow={1}>
                 <Typography
-                  component={"span"}
+                  component={'span'}
                   variant="body1"
-                  fontWeight={"bold"}
+                  fontWeight={'bold'}
                 >
                   Forma de avaliação
                 </Typography>
@@ -128,7 +130,7 @@ export const PageIndice = () => {
                   <Stack
                     justifyContent="center"
                     alignItems="center"
-                    width={isSmallScreen ? "100%" : "30%"}
+                    width={isSmallScreen ? '100%' : '30%'}
                     padding={4}
                   >
                     <CircularProgress />
@@ -137,7 +139,7 @@ export const PageIndice = () => {
                   <>
                     {!success ? (
                       <Box
-                        width={isSmallScreen ? "100%" : "30%"}
+                        width={isSmallScreen ? '100%' : '30%'}
                         bgcolor={colors.customBlue.main}
                       >
                         <Button
@@ -145,7 +147,7 @@ export const PageIndice = () => {
                           sx={{
                             padding: 3,
                             fontSize: 18,
-                            textTransform: "none",
+                            textTransform: 'none',
                             color: isDark
                               ? colors?.primary?.contrastText
                               : undefined,

@@ -1,27 +1,30 @@
 import { createContext, useContext, useState } from "react";
 import { PropsIndiceContext, PropsIndiceProvider } from "./@types";
-import { FormQuestion } from "src/types";
+import { Questionario, Indice } from "src/types";
 
 const IndiceContext = createContext<PropsIndiceContext>({
-  listQuestion: [],
-  idStep: "",
-  indice: 0,
+    lQuestionarios: [],
+    idStep: "",
+    indice: 0,
+    objIndice: null,
+    setObjIndice: ()=>{},
 
-  setIndice: () => {},
-  setIdStep: () => {},
-  handleLoadList: () => {},
-  handleClearList: () => {},
-  handleSetQuestion: () => {},
-  handleClearQuestion: () => {},
+    setIndice: () => {},
+    setIdStep: () => {},
+    handleLoadList: () => {},
+    handleClearList: () => {},
+    handleSetQuestion: () => {},
+    handleClearQuestion: () => {},
 });
 
 export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
   const [indice, setIndice] = useState<number>(0);
   const [idStep, setIdStep] = useState("");
-  const [listQuestion, setListQuestion] = useState<FormQuestion[]>([]);
+  const [listQuestion, setListQuestion] = useState<Questionario[]>([]);
+  const [objIndice, setObjIndice] = useState<Indice>({"id":"", "codigoIndice":""});
 
-  const handleLoadList = (formQuestion: FormQuestion[]) => {
-    setListQuestion(formQuestion);
+  const handleLoadList = (questionarios: Questionario[]) => {
+    setListQuestion(questionarios);
   };
 
   const handleClearList = () => {
@@ -32,6 +35,7 @@ export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
 
   const handleClearQuestion = () => {
     setIndice(0);
+    setObjIndice({"id":"", "codigoIndice":""});
     setIdStep("");
     setListQuestion([]);
   };
@@ -40,15 +44,17 @@ export const IndiceProvider: React.FC<PropsIndiceProvider> = ({ children }) => {
     <>
       <IndiceContext.Provider
         value={{
-          indice,
-          idStep,
-          listQuestion,
-          setIndice,
-          setIdStep,
-          handleLoadList,
-          handleClearList,
-          handleSetQuestion,
-          handleClearQuestion,
+            indice,
+            idStep,
+            objIndice,
+            lQuestionarios: listQuestion,
+            setIndice,
+            setObjIndice,
+            setIdStep,
+            handleLoadList,
+            handleClearList,
+            handleSetQuestion,
+            handleClearQuestion,
         }}
       >
         {children}

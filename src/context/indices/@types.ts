@@ -1,15 +1,17 @@
-import { FormQuestion, Question } from "src/types";
+import { Questionario, Questao, Indice } from "src/types";
 
 export type PropsIndiceContext = {
-  listQuestion: FormQuestion[];
+  lQuestionarios: Questionario[];
   idStep: string,
   indice: number,
+  objIndice?: Indice | null,
 
   setIndice: React.Dispatch<React.SetStateAction<number>>,
+  setObjIndice: React.Dispatch<React.SetStateAction<Indice>>,
   setIdStep: React.Dispatch<React.SetStateAction<string>>,
-  handleLoadList: (form: FormQuestion[]) => void;
-  handleClearList: (idFrom: number) => void;
-  handleSetQuestion: (idForm: number, question: Question) => void;
+  handleLoadList: (form: Questionario[]) => void;
+  handleClearList: (id: string) => void;
+  handleSetQuestion: (id: string, questao: Questao) => void;
   handleClearQuestion: () => void;
 };
 
