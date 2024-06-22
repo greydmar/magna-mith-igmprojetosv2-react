@@ -20,6 +20,7 @@ export const PageIndice = () => {
   const { indice, objIndice } = useIndice();
 
   const methods = useForm<{ form: Questionario }>();
+  const form = methods.watch();
 
   const {
     openLanguage,
@@ -31,6 +32,22 @@ export const PageIndice = () => {
     isLoading,
     isLoadingIndices,
   } = usePageIndices({ methods: methods });
+
+  const calculateProgessbar = ({ form }: { form: Questionario }) => {
+    if (!form?.questoes) return 0;
+    const formQuestionsLength = form?.questoes?.length;
+
+    const filterAnsweredQuestions = form?.questoes?.filter((questao) => {
+      if (questao.rating && questao.rating > 0) {
+        return questao;
+      }
+    });
+
+    const answeredQuestions = filterAnsweredQuestions.length;
+    const result = (answeredQuestions / formQuestionsLength) * 100;
+
+    return result;
+  };
 
   return (
     <>
@@ -62,8 +79,8 @@ export const PageIndice = () => {
               ) : (
                 <Questiontable>
                   <ProgressBar
-                    value={indice * 100}
-                    label="Progresso IGF (Custo)"
+                    value={calculateProgessbar(form)}
+                    label={`Progresso ${objIndice?.descricao}`}
                   />
                 </Questiontable>
               )}
