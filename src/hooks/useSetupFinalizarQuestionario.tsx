@@ -26,7 +26,6 @@ export const useSetupFinalizarQuestionario = ({
     const form = await handleValidateQuestionario(data.form);
 
     if (!form.isValid) {
-      console.log('aqui');
       setOpenError(true);
       return;
     }

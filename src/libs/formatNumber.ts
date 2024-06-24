@@ -1,6 +1,7 @@
 export const formatNumber = (value: number) => {
-  return value.toLocaleString("pt-BR", {
+  const formatter = new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+  return formatter.format(value);
 };

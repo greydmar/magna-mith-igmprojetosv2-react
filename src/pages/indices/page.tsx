@@ -8,7 +8,7 @@ import { Box, Stack, useMediaQuery } from '@mui/system';
 import { useThemeMode } from '@store/useThemeMode';
 import { colors } from '@theme/colors';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Questionario } from 'src/types';
+import { Indice, Questionario } from 'src/types';
 import { usePageIndices } from './hooks/usePageIndices';
 import { ModalLanguage } from './modals/modal';
 import { ModalError } from './modals/modalError';
@@ -38,10 +38,15 @@ export const PageIndice = () => {
 
   const calculateProgessbar = ({ form }: { form: Questionario }) => {
     if (!form?.questoes) return 0;
-    const formQuestionsLength = form?.questoes?.length;
 
+    // Desconsiderando 0 estrelas "NA"
+    const formQuestionsLength = form?.questoes?.filter(
+      (questao) => questao?.rating && questao?.rating > 0,
+    ).length;
+
+    // Considerar como FEITO entre 3 à 5 estrelas. Neste caso deverá considerar na barra de progresso.
     const filterAnsweredQuestions = form?.questoes?.filter((questao) => {
-      if (questao.rating && questao.rating > 0) {
+      if (questao.rating && questao.rating >= 3) {
         return questao;
       }
     });
@@ -49,7 +54,11 @@ export const PageIndice = () => {
     const answeredQuestions = filterAnsweredQuestions.length;
     const result = (answeredQuestions / formQuestionsLength) * 100;
 
-    return result;
+    if (Number.isNaN(result)) {
+      return 0;
+    }
+
+    return Number(result);
   };
 
   useEffect(() => {
@@ -57,6 +66,21 @@ export const PageIndice = () => {
       setSuccessModalOpen(true);
     }
   }, [success]);
+
+  const getIndiceName = (objIndice: Indice | undefined | null) => {
+    if (!objIndice) return '';
+    // descricao exemplo: IGF - L (Lançamentos)
+    const splitDescription = objIndice?.descricao?.split('(');
+    if (Array.isArray(splitDescription)) {
+      const descriptionWithoutParentheses = splitDescription[1].substring(
+        0,
+        splitDescription[1].length - 1,
+      );
+
+      return descriptionWithoutParentheses;
+    }
+    return '';
+  };
 
   return (
     <>
@@ -72,7 +96,7 @@ export const PageIndice = () => {
                 component={'span'}
                 color={'primary.main'}
               >
-                Custo
+                {getIndiceName(objIndice)}
               </Typography>{' '}
               que compõe o IGF
             </Typography>
@@ -97,12 +121,19 @@ export const PageIndice = () => {
           </Box>
           {objIndice && (
             <Box paddingRight={3} paddingLeft={isSmallScreen ? 3 : 0}>
-              <Box bgcolor={colors.customBlue.main} paddingY={2}>
+              <Box
+                bgcolor={colors.customBlue.main}
+                paddingY={2}
+                display="flex"
+                flexDirection="row"
+              >
                 <Typography
                   component={'span'}
                   variant="h5"
                   fontWeight={'bold'}
                   marginLeft={6}
+                  display="flex"
+                  flexDirection="row"
                 >
                   Índice {objIndice?.descricao}
                 </Typography>
