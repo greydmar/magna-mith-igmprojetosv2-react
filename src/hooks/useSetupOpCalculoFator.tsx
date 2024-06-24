@@ -1,5 +1,5 @@
 import { localStorageHandler } from '@helpers/localStorage';
-import { Questao, Questionario, TypeBackend } from '@models';
+import { Questionario, TypeBackend } from '@models';
 import { EndpointsMap, Mapeamentos, ServerModels } from '@remoteApi';
 import { useEffect } from 'react';
 import { usePatch } from 'simple-queries-react';
@@ -14,17 +14,16 @@ export const useSetupOpCalculoFator = () => {
 
   let handleReqInfoResponse: (resposta: Questionario) => void = () => {};
 
-  const enviarRecalculo = (form: Questionario, questao: Questao) => {
-    const lQuestoes = form.questoes?.filter((item) => item.id == questao.id);
+  const enviarRecalculo = async (form: Questionario) => {
+    new Promise(() => {
+      const reqResposta = Mapeamentos.mapToServerModelReqRespostaParcial(
+        form,
+        form.questoes,
+      );
 
-    const reqResposta = Mapeamentos.mapToServerModelReqRespostaParcial(
-      form,
-      lQuestoes,
-    );
-
-    if (reqResposta.items?.length == 0) return;
-
-    reqInfo.send(reqResposta);
+      if (reqResposta.items?.length == 0) return;
+      reqInfo.send(reqResposta);
+    });
   };
 
   // tratamento de resposta: sucesso
