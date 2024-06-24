@@ -1,13 +1,13 @@
-import { formatNumber } from "@libs/formatNumber";
-import { Box, Paper, Typography, useTheme } from "@mui/material";
-import { useThemeMode } from "@store/useThemeMode";
-import { colors } from "@theme/colors";
-import { PropsProgressBar } from "./@types";
-import { styles, stylesContent, stylesInternalBar } from "./styles";
+import { formatNumber } from '@libs/formatNumber';
+import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { useThemeMode } from '@store/useThemeMode';
+import { colors } from '@theme/colors';
+import { PropsProgressBar } from './@types';
+import { styles, stylesContent, stylesInternalBar } from './styles';
 
 export const ProgressBar: React.FC<PropsProgressBar> = ({
   label,
-  value= 0
+  value = 0,
 }) => {
   const { themeMode } = useThemeMode();
   const theme = useTheme();
@@ -18,11 +18,11 @@ export const ProgressBar: React.FC<PropsProgressBar> = ({
         sx={{
           ...styles,
           backgroundColor:
-            themeMode == "dark"
+            themeMode == 'dark'
               ? theme.palette.primary.light
               : colors.customBlue.light,
           boxShadow: `inset 1px 3px 12px 0px  ${
-            themeMode == "dark"
+            themeMode == 'dark'
               ? theme.palette.primary.dark
               : theme.palette.primary.main
           }`,
@@ -33,7 +33,7 @@ export const ProgressBar: React.FC<PropsProgressBar> = ({
           sx={{
             ...stylesContent,
             textShadow: `0px 0px 3px ${
-              themeMode == "dark"
+              themeMode == 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.primary.main
             }`,
@@ -45,7 +45,7 @@ export const ProgressBar: React.FC<PropsProgressBar> = ({
           sx={{
             ...stylesInternalBar,
             backgroundColor:
-              themeMode == "dark" ? "primary.main" : "primary.main",
+              themeMode == 'dark' ? 'primary.main' : 'primary.main',
           }}
           width={`${value}%`}
           component={Paper}

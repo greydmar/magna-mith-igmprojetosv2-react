@@ -1,20 +1,20 @@
-import { CellIndicator } from "@components/cellIndicator/cellIndicator";
-import { Rating } from "@components/rating/rating";
-import { Box, Typography } from "@mui/material";
-import { Stack, useMediaQuery } from "@mui/system";
-import { useThemeMode } from "@store/useThemeMode";
-import { colors } from "@theme/colors";
-import { useFormContext } from "react-hook-form";
-import { Questionario } from "@models";
-import { PropsQuestion } from "./@types";
-import { QuestionCell } from "./questionCell";
-import { useIndice } from "@context/indices";
-import { useSetupOpCalculoFator } from "@hooks/useSetupOpCalculoFator";
+import { CellIndicator } from '@components/cellIndicator/cellIndicator';
+import { Rating } from '@components/rating/rating';
+import { Box, Typography } from '@mui/material';
+import { Stack, useMediaQuery } from '@mui/system';
+import { useThemeMode } from '@store/useThemeMode';
+import { colors } from '@theme/colors';
+import { useFormContext } from 'react-hook-form';
+import { Questionario } from '@models';
+import { PropsQuestion } from './@types';
+import { QuestionCell } from './questionCell';
+import { useIndice } from '@context/indices';
+import { useSetupOpCalculoFator } from '@hooks/useSetupOpCalculoFator';
 
 export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
   const { themeMode } = useThemeMode();
-  const isDark = themeMode == "dark";
-  const isSmallScreen = useMediaQuery("(max-width:800px)");
+  const isDark = themeMode == 'dark';
+  const isSmallScreen = useMediaQuery('(max-width:800px)');
   const { setIndice } = useIndice();
   const formContext = useFormContext<{ form: Questionario }>();
   const { setValue } = useFormContext<{ form: Questionario }>();
@@ -25,7 +25,7 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
     setValue(`form.questoes.${index}.rating`, value);
 
     const form = formContext.getValues().form;
-    opCalculoFator.enviarRecalculo(form, question);
+    opCalculoFator.enviarRecalculo(form);
   };
 
   opCalculoFator.processarRespostaRecalculo((qResposta: Questionario) => {
@@ -40,7 +40,7 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
 
       setValue(
         `form.questoes.${updIndex}.textoJustificativa`,
-        qAtual.textoJustificativa
+        qAtual.textoJustificativa,
       );
       setValue(`form.questoes.${updIndex}.rating`, qAtual.rating);
     }
@@ -50,16 +50,16 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
 
   return (
     <>
-      <QuestionCell width={isSmallScreen ? undefined : "70%"}>
+      <QuestionCell width={isSmallScreen ? undefined : '70%'}>
         <Box
           bgcolor={isDark ? colors?.darkMode?.light : undefined}
-          height={"100%"}
+          height={'100%'}
         >
           <Stack
-            direction={isSmallScreen ? "column-reverse" : "row"}
-            height={"100%"}
+            direction={isSmallScreen ? 'column-reverse' : 'row'}
+            height={'100%'}
             gap={4}
-            alignItems={"center"}
+            alignItems={'center'}
             paddingLeft={2}
             padding={isSmallScreen ? 3 : 0}
             marginX={isSmallScreen ? 0 : 3}
@@ -69,10 +69,10 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
                 isSmallScreen
                   ? undefined
                   : isDark
-                  ? "inherit"
+                  ? 'inherit'
                   : colors.customBlue.light
               }
-              sx={{ position: "relative" }}
+              sx={{ position: 'relative' }}
             >
               {!isSmallScreen && <CellIndicator />}
               <Box paddingY={0.3} paddingX={1.5}>
@@ -83,7 +83,7 @@ export const Question: React.FC<PropsQuestion> = ({ question, index }) => {
               </Box>
             </Box>
             <Box>
-              <Typography component={"span"}>{question?.texto}</Typography>
+              <Typography component={'span'}>{question?.texto}</Typography>
             </Box>
           </Stack>
         </Box>
