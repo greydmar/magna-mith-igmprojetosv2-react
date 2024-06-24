@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: igm-frontend
+  labels:
+    app: igm-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: igm-frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deployment: igm-frontend
+    spec:
+      containers:
+        - name: igm-frontend
+          image: registry.magnasistemas.com.br:5005/mith/labs/poc_indices-de-gest-o-magna/react/frontend
+          ports:
+            - containerPort: 8083
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: pullimagemith

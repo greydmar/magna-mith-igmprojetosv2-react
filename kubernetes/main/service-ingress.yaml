@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: igm-frontend-ingress
+  namespace: default
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - igm.magnasistemas.com.br
+      secretName: magnacert
+  rules:
+    - host: igm.magnasistemas.com.br
+      http:
+        paths:
+          - backend:
+              service:
+                name: igm-frontend
+                port:
+                  number: 8083
+            path: /
+            pathType: Prefix

@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: igm-frontend
+  namespace: "default"
+  labels:
+    deployment: igm-frontend
+spec:
+  selector:
+    deployment: igm-frontend
+  type: NodePort
+  ports:
+    - port: 8083
+      targetPort: 8083
+      nodePort: 30021

@@ -1,0 +1,4 @@
+include:
+  - project: 'mith/labs/devops/pipeline'
+    ref: develop
+    file: 'node.yaml'
