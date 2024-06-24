@@ -8,7 +8,7 @@ import { Box, Stack, useMediaQuery } from '@mui/system';
 import { useThemeMode } from '@store/useThemeMode';
 import { colors } from '@theme/colors';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Questionario } from 'src/types';
+import { Indice, Questionario } from 'src/types';
 import { usePageIndices } from './hooks/usePageIndices';
 import { ModalLanguage } from './modals/modal';
 import { ModalError } from './modals/modalError';
@@ -58,6 +58,21 @@ export const PageIndice = () => {
     }
   }, [success]);
 
+  const getIndiceName = (objIndice: Indice | undefined | null) => {
+    if (!objIndice) return '';
+    // descricao exemplo: IGF - L (Lançamentos)
+    const splitDescription = objIndice?.descricao?.split('(');
+    if (Array.isArray(splitDescription)) {
+      const descriptionWithoutParentheses = splitDescription[1].substring(
+        0,
+        splitDescription[1].length - 1,
+      );
+
+      return descriptionWithoutParentheses;
+    }
+    return '';
+  };
+
   return (
     <>
       <FormProvider {...methods}>
@@ -72,7 +87,7 @@ export const PageIndice = () => {
                 component={'span'}
                 color={'primary.main'}
               >
-                Custo
+                {getIndiceName(objIndice)}
               </Typography>{' '}
               que compõe o IGF
             </Typography>

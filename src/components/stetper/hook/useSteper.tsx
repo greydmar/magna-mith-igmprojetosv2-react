@@ -12,7 +12,7 @@ export const useSteper = () => {
 
   const handleSetSteps = (indices: Indice[] | []) => {
     const current = indices as Indice[];
-    setIdStep(indices[0].codigoIndice);
+    setIdStep(indices[3].codigoIndice);
     setSteps(
       current.map((item) => ({
         id: item.id,
